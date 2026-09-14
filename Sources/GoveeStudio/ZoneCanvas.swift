@@ -51,7 +51,7 @@ final class ZoneCanvasView: NSView {
         super.init(frame:frameRect)
         wantsLayer=true
         setAccessibilityRole(.group)
-        setAccessibilityLabel("Bildschirmzonen")
+        setAccessibilityLabel(tr("Bildschirmzonen"))
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -238,7 +238,7 @@ final class ZoneCanvasView: NSView {
             let box=convert(rect(for:zones[i]),to:nil)
             elements[i].setAccessibilityFrame(window?.convertToScreen(box) ?? box)
             elements[i].setAccessibilitySelected(selection.contains(i))
-            elements[i].setAccessibilityValue("X \(Int(zones[i].x*100)) Prozent, Y \(Int(zones[i].y*100)) Prozent")
+            elements[i].setAccessibilityValue(tr("X \(Int(zones[i].x*100)) Prozent, Y \(Int(zones[i].y*100)) Prozent"))
         }
     }
 }

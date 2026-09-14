@@ -27,6 +27,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 struct GoveeStudioApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
     @StateObject private var model=StudioModel()
+    @ObservedObject private var language=LanguageSettings.shared
     var body: some Scene {
         WindowGroup {
             StudioView().environmentObject(model)
@@ -36,12 +37,12 @@ struct GoveeStudioApp: App {
         .windowStyle(.hiddenTitleBar)
         .commands {
             CommandGroup(replacing:.newItem) {}
-            CommandMenu("Licht") {
-                Button("Sync starten") { model.begin(output:true) }.disabled(model.busy)
-                Button("Stoppen") { Task { await model.stop() } }.keyboardShortcut(".",modifiers:.command)
+            CommandMenu(tr("Licht")) {
+                Button(tr("Sync starten")) { model.begin(output:true) }.disabled(model.busy)
+                Button(tr("Stoppen")) { Task { await model.stop() } }.keyboardShortcut(".",modifiers:.command)
                 Divider()
-                Button("Geräte suchen") { Task { await model.scan() } }
-                Button("Setup-Ordner öffnen") { NSWorkspace.shared.open(model.directory) }
+                Button(tr("Geräte suchen")) { Task { await model.scan() } }
+                Button(tr("Setup-Ordner öffnen")) { NSWorkspace.shared.open(model.directory) }
             }
         }
     }

@@ -10,28 +10,28 @@ struct EditorView: View {
             HStack(alignment:.top) {
                 VStack(alignment:.leading,spacing:8) {
                     Eyebrow(text:"01 / Zonen-Editor")
-                    Text("Licht folgt deinem Bildschirm.").font(.system(size:24,weight:.medium)).tracking(-0.65)
-                    Text("Zieh jedes Segment dorthin, wo es seine Farbe aufnehmen soll.")
+                    Text(verbatim:tr("Licht folgt deinem Bildschirm.")).font(.system(size:24,weight:.medium)).tracking(-0.65)
+                    Text(verbatim:tr("Zieh jedes Segment dorthin, wo es seine Farbe aufnehmen soll."))
                         .font(.system(size:11)).foregroundStyle(Palette.muted)
                 }
                 Spacer(minLength:4)
             }.padding(.top,27).padding(.bottom,24)
             HStack {
                 Image(systemName:"display").foregroundStyle(Palette.muted)
-                Picker("Bildschirm",selection:$model.displayID) {
-                    ForEach(model.displays) { display in Text(display.name).tag(display.id) }
+                Picker(tr("Bildschirm"),selection:$model.displayID) {
+                    ForEach(model.displays) { display in Text(verbatim:tr(display.name)).tag(display.id) }
                 }.labelsHidden().pickerStyle(.menu).frame(maxWidth:220).disabled(model.busy)
                 Spacer()
-                Text(live.frame == nil ? "KEINE AUFNAHME":"LIVE-VORSCHAU · 5 HZ")
+                Text(verbatim:tr(live.frame == nil ? "KEINE AUFNAHME":"LIVE-VORSCHAU · 5 HZ"))
                     .font(.system(size:8,weight:.medium,design:.monospaced)).tracking(0.5).foregroundStyle(Palette.muted)
             }.padding(.bottom,12)
             stage
                 .frame(maxWidth:.infinity,maxHeight:.infinity)
             HStack(spacing:8) {
                 Image(systemName:"cursorarrow.motionlines").foregroundStyle(tint)
-                Text("Strg/⌘ + Klick: Mehrfachauswahl · Ziehen · Pfeiltasten").font(.system(size:10)).foregroundStyle(Palette.muted)
+                Text(verbatim:tr("Strg/⌘ + Klick: Mehrfachauswahl · Ziehen · Pfeiltasten")).font(.system(size:10)).foregroundStyle(Palette.muted)
                 Spacer()
-                Text("\(model.selectedZone+1) / \(model.selected?.zones.count ?? 0)").font(.system(size:10,design:.monospaced)).foregroundStyle(tint)
+                Text(verbatim:tr("\(model.selectedZone+1) / \(model.selected?.zones.count ?? 0)")).font(.system(size:10,design:.monospaced)).foregroundStyle(tint)
             }.padding(.top,12).padding(.bottom,22)
             mappingTools
             ThinDivider().padding(.vertical,20)
@@ -70,10 +70,10 @@ struct EditorView: View {
     }
     private var mappingTools: some View {
         HStack(spacing:8) {
-            Text("ANORDNEN").font(.system(size:9,weight:.semibold,design:.monospaced)).tracking(1).foregroundStyle(Palette.muted)
+            Text(verbatim:tr("ANORDNEN")).font(.system(size:9,weight:.semibold,design:.monospaced)).tracking(1).foregroundStyle(Palette.muted)
             Spacer(minLength:0)
             ForEach(MappingPreset.allCases,id:\.self) { preset in
-                Button(preset.rawValue) { model.map(preset) }
+                Button(tr(preset.rawValue)) { model.map(preset) }
                     .buttonStyle(.plain).font(.system(size:10,weight:.medium)).padding(.horizontal,9).padding(.vertical,7)
                     .background(Palette.raised,in:RoundedRectangle(cornerRadius:6))
                     .disabled(model.selected == nil)
@@ -85,7 +85,7 @@ struct EditorView: View {
             HStack {
                 Eyebrow(text:"Segmentfarben")
                 Spacer()
-                Text(model.running ? "LIVE":"START FÜR LIVE-FARBEN").font(.system(size:8,design:.monospaced)).foregroundStyle(Palette.muted)
+                Text(verbatim:tr(model.running ? "LIVE":"START FÜR LIVE-FARBEN")).font(.system(size:8,design:.monospaced)).foregroundStyle(Palette.muted)
             }
             ScrollView(.horizontal,showsIndicators:false) {
                 HStack(spacing:6) {
@@ -96,7 +96,7 @@ struct EditorView: View {
                                     RoundedRectangle(cornerRadius:5)
                                         .fill(segmentColor(device:device,index:i)).frame(width:30,height:24)
                                         .overlay(RoundedRectangle(cornerRadius:5).strokeBorder(model.selectedZone == i ? tint:Palette.line,lineWidth:model.selectedZone == i ? 2:1))
-                                    Text(String(format:"%02d",i+1)).font(.system(size:8,design:.monospaced)).foregroundStyle(model.selectedZone == i ? tint:Palette.muted)
+                                    Text(verbatim:tr(String(format:"%02d",i+1))).font(.system(size:8,design:.monospaced)).foregroundStyle(model.selectedZone == i ? tint:Palette.muted)
                                 }
                             }.buttonStyle(.plain)
                         }
@@ -120,10 +120,10 @@ struct EditorView: View {
     }
     private func metric(_ label: String,value: String,unit: String) -> some View {
         VStack(alignment:.leading,spacing:6) {
-            Text(label).font(.system(size:8,weight:.medium,design:.monospaced)).tracking(0.8).foregroundStyle(Palette.muted)
+            Text(verbatim:tr(label)).font(.system(size:8,weight:.medium,design:.monospaced)).tracking(0.8).foregroundStyle(Palette.muted)
             HStack(alignment:.firstTextBaseline,spacing:5) {
-                Text(value).font(.system(size:19,weight:.medium,design:.monospaced)).foregroundStyle(Palette.text)
-                Text(unit).font(.system(size:8)).foregroundStyle(Palette.muted)
+                Text(verbatim:tr(value)).font(.system(size:19,weight:.medium,design:.monospaced)).foregroundStyle(Palette.text)
+                Text(verbatim:tr(unit)).font(.system(size:8)).foregroundStyle(Palette.muted)
             }
         }
     }
@@ -147,8 +147,8 @@ struct AmbientPlaceholder: View {
                 }
                 VStack(spacing:9) {
                     Image(systemName:"display").font(.system(size:27,weight:.ultraLight))
-                    Text("Dein Bildschirm wird zur Lichtquelle.").font(.system(size:12,weight:.medium))
-                    Text("Vorschau starten, um Farben live zu sehen.").font(.system(size:10)).foregroundStyle(.white.opacity(0.4))
+                    Text(verbatim:tr("Dein Bildschirm wird zur Lichtquelle.")).font(.system(size:12,weight:.medium))
+                    Text(verbatim:tr("Vorschau starten, um Farben live zu sehen.")).font(.system(size:10)).foregroundStyle(.white.opacity(0.4))
                 }.foregroundStyle(.white.opacity(0.6)).allowsHitTesting(false)
             }
         }

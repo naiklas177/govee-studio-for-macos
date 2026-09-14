@@ -16,46 +16,46 @@ struct CloudLibraryView: View {
         VStack(alignment:.leading,spacing:18) {
             HStack {
                 VStack(alignment:.leading,spacing:6) {
-                    Text("Govees Spielzeugkiste.").font(.system(size:24,weight:.semibold))
-                    Text("Originaleffekte für den ganzen Raum oder einzelne Geräte.").font(.system(size:11)).foregroundStyle(Palette.muted)
+                    Text(verbatim:tr("Govees Spielzeugkiste.")).font(.system(size:24,weight:.semibold))
+                    Text(verbatim:tr("Originaleffekte für den ganzen Raum oder einzelne Geräte.")).font(.system(size:11)).foregroundStyle(Palette.muted)
                 }
                 Spacer()
                 Image(systemName:"cloud").font(.system(size:25)).foregroundStyle(Palette.mint)
             }
             CredentialSettingsView(library:library)
-            Button(library.refreshing ? "Lädt …":"Katalog aktualisieren") { Task { await library.refresh(devices:model.devices) } }
+            Button(tr(library.refreshing ? "Lädt …":"Katalog aktualisieren")) { Task { await library.refresh(devices:model.devices) } }
                 .buttonStyle(StudioButtonStyle()).disabled(library.refreshing || library.key.isEmpty)
-            Text(library.status).font(.system(size:10)).foregroundStyle(Palette.muted).textSelection(.enabled)
-            Picker("Ausgabe",selection:$wholeRoom) {
-                Text("Ganzer Raum · Original").tag(true)
-                Text("Einzelgerät · Original & DIY").tag(false)
+            Text(verbatim:tr(library.status)).font(.system(size:10)).foregroundStyle(Palette.muted).textSelection(.enabled)
+            Picker(tr("Ausgabe"),selection:$wholeRoom) {
+                Text(verbatim:tr("Ganzer Raum · Original")).tag(true)
+                Text(verbatim:tr("Einzelgerät · Original & DIY")).tag(false)
             }.pickerStyle(.segmented)
             if wholeRoom {
                 roomPicker
             } else {
             HStack {
-                Picker("Gerät",selection:Binding(get:{currentID},set:{deviceID=$0})) {
-                    ForEach(library.catalog.groups) { group in Text(model.devices.first(where:{$0.id == group.device})?.name ?? group.name).tag(group.device) }
+                Picker(tr("Gerät"),selection:Binding(get:{currentID},set:{deviceID=$0})) {
+                    ForEach(library.catalog.groups) { group in Text(verbatim:tr(model.devices.first(where:{$0.id == group.device})?.name ?? group.name)).tag(group.device) }
                 }.frame(maxWidth:300)
-                Picker("Effekte",selection:$kind) {
-                    Text("Alle").tag("all"); Text("Original").tag("lightScene"); Text("DIY").tag("diyScene")
+                Picker(tr("Effekte"),selection:$kind) {
+                    Text(verbatim:tr("Alle")).tag("all"); Text(verbatim:tr("Original")).tag("lightScene"); Text(verbatim:tr("DIY")).tag("diyScene")
                 }.pickerStyle(.segmented).frame(width:210)
                 Spacer()
             }
-            TextField("Effekte suchen …",text:$query).textFieldStyle(.roundedBorder).accessibilityLabel("Govee-Effekte suchen")
+            TextField(tr("Effekte suchen …"),text:$query).textFieldStyle(.roundedBorder).accessibilityLabel(tr("Govee-Effekte suchen"))
             if let group {
                 HStack {
-                    Text("\(filtered.count) Effekte").font(.system(size:11,weight:.medium))
+                    Text(verbatim:tr("\(filtered.count) Effekte")).font(.system(size:11,weight:.medium))
                     Spacer()
-                    if let date=group.updatedAt { Text("Stand \(date.formatted(date:.abbreviated,time:.shortened))").font(.system(size:9)).foregroundStyle(Palette.muted) }
+                    if let date=group.updatedAt { Text(verbatim:tr("Stand \(date.formatted(date:.abbreviated,time:.shortened))")).font(.system(size:9)).foregroundStyle(Palette.muted) }
                 }
-                if let error=group.error { Text("Abruf unvollständig · \(error)").font(.system(size:10)).foregroundStyle(.orange) }
+                if let error=group.error { Text(verbatim:tr("Abruf unvollständig · \(error)")).font(.system(size:10)).foregroundStyle(.orange) }
                 if !model.devices.contains(where:{$0.id == group.device && $0.enabled}) {
-                    Text("Gerät im Setup aktivieren, um Effekte zu starten.").font(.system(size:11)).foregroundStyle(.orange)
+                    Text(verbatim:tr("Gerät im Setup aktivieren, um Effekte zu starten.")).font(.system(size:11)).foregroundStyle(.orange)
                 }
             }
             if filtered.isEmpty {
-                Text(library.catalog.groups.isEmpty ? "Key eingeben und den Katalog laden. Deine lokalen Szenen bleiben jederzeit verfügbar.":"Keine passenden Effekte. Bei leerem DIY-Katalog zuerst einen Look in Govee Home speichern und aktualisieren.")
+                Text(verbatim:tr(library.catalog.groups.isEmpty ? "Key eingeben und den Katalog laden. Deine lokalen Szenen bleiben jederzeit verfügbar.":"Keine passenden Effekte. Bei leerem DIY-Katalog zuerst einen Look in Govee Home speichern und aktualisieren."))
                     .font(.system(size:12)).foregroundStyle(Palette.muted).padding(.vertical,20)
             }
             LazyVGrid(columns:[GridItem(.flexible()),GridItem(.flexible()),GridItem(.flexible())],spacing:10) {
@@ -65,19 +65,19 @@ struct CloudLibraryView: View {
                             HStack {
                                 Image(systemName:scene.kind == "diyScene" ? "paintbrush.pointed.fill":"sparkles").foregroundStyle(Palette.mint)
                                 Spacer()
-                                Text(scene.label.uppercased()).font(.system(size:8,design:.monospaced)).foregroundStyle(Palette.muted)
+                                Text(verbatim:tr(scene.label.uppercased())).font(.system(size:8,design:.monospaced)).foregroundStyle(Palette.muted)
                             }
                             Text(scene.displayName).font(.system(size:12,weight:.semibold)).lineLimit(2).frame(height:32,alignment:.topLeading)
-                            Label(model.activeCloud?.id == scene.id ? "Govee bestätigt":"Auf Gerät starten",systemImage:model.activeCloud?.id == scene.id ? "checkmark.circle.fill":"play.fill")
+                            Label(tr(model.activeCloud?.id == scene.id ? "Govee bestätigt":"Auf Gerät starten"),systemImage:model.activeCloud?.id == scene.id ? "checkmark.circle.fill":"play.fill")
                                 .font(.system(size:9)).foregroundStyle(Palette.mint)
                         }.frame(maxWidth:.infinity,alignment:.leading).padding(14)
                             .background(model.activeCloud?.id == scene.id ? Palette.mint.opacity(0.12):Palette.raised,in:RoundedRectangle(cornerRadius:10))
                     }.buttonStyle(.plain).disabled(library.key.isEmpty || !model.devices.contains(where:{$0.id == scene.device && $0.enabled}))
-                    .accessibilityLabel("\(scene.displayName), \(scene.label), auf ausgewähltem Gerät starten")
+                    .accessibilityLabel(tr("\(scene.displayName), \(scene.label), auf ausgewähltem Gerät starten"))
                 }
             }
             }
-            Text("Katalog offline gespeichert · Start über Govee-Cloud · keine Bildschirm- oder Audiodaten übertragen. Stoppen stellt die gesicherten Grundwerte wieder her; ein vorheriger Govee-Effekt lässt sich daraus nicht rekonstruieren.")
+            Text(verbatim:tr("Katalog offline gespeichert · Start über Govee-Cloud · keine Bildschirm- oder Audiodaten übertragen. Stoppen stellt die gesicherten Grundwerte wieder her; ein vorheriger Govee-Effekt lässt sich daraus nicht rekonstruieren."))
                 .font(.system(size:10)).foregroundStyle(Palette.muted)
         }.padding(20).background(Palette.panel,in:RoundedRectangle(cornerRadius:14))
     }
@@ -88,22 +88,22 @@ struct CloudLibraryView: View {
     }
     private var roomPicker: some View {
         VStack(alignment:.leading,spacing:14) {
-            Text("Je Gerät ein Originaleffekt. Alle aktivierten Leuchten starten gemeinsam; die Govee-Befehle werden nacheinander gesendet.").font(.system(size:11)).foregroundStyle(Palette.muted)
+            Text(verbatim:tr("Je Gerät ein Originaleffekt. Alle aktivierten Leuchten starten gemeinsam; die Govee-Befehle werden nacheinander gesendet.")).font(.system(size:11)).foregroundStyle(Palette.muted)
             ForEach(model.devices.filter(\.enabled)) { device in
                 let scenes=library.catalog.groups.first(where:{$0.device == device.id && $0.sku == device.sku})?.scenes.filter { $0.kind == "lightScene" }.sorted { $0.displayName.localizedStandardCompare($1.displayName) == .orderedAscending } ?? []
                 VStack(alignment:.leading,spacing:7) {
                     Text(device.name).font(.system(size:12,weight:.semibold))
-                    Picker("Originalszene",selection:Binding(get:{library.roomScenes.sceneIDs[device.id] ?? ""},set:{library.roomScenes.sceneIDs[device.id]=$0;library.saveRoomScenes()})) {
-                        Text("Szene auswählen …").tag("")
-                        ForEach(scenes) { scene in Text(sceneTitle(scene,in:scenes)).tag(scene.id) }
-                    }.accessibilityLabel("Originalszene für \(device.name)")
-                    if scenes.isEmpty { Text("Für dieses Gerät zuerst den Katalog aktualisieren.").font(.caption).foregroundStyle(.orange) }
+                    Picker(tr("Originalszene"),selection:Binding(get:{library.roomScenes.sceneIDs[device.id] ?? ""},set:{library.roomScenes.sceneIDs[device.id]=$0;library.saveRoomScenes()})) {
+                        Text(verbatim:tr("Szene auswählen …")).tag("")
+                        ForEach(scenes) { scene in Text(verbatim:tr(sceneTitle(scene,in:scenes))).tag(scene.id) }
+                    }.accessibilityLabel(tr("Originalszene für \(device.name)"))
+                    if scenes.isEmpty { Text(verbatim:tr("Für dieses Gerät zuerst den Katalog aktualisieren.")).font(.caption).foregroundStyle(.orange) }
                 }.padding(12).background(Palette.raised,in:RoundedRectangle(cornerRadius:9))
             }
-            Button("Originalszenen auf allen Geräten starten") { model.activateRoomScenes(library.roomScenes) }
+            Button(tr("Originalszenen auf allen Geräten starten")) { model.activateRoomScenes(library.roomScenes) }
                 .buttonStyle(StudioButtonStyle(prominent:true))
                 .disabled(library.key.isEmpty || (try? library.roomScenes.plan(devices:model.devices,catalog:library.catalog)) == nil)
-            Text("Alle Geräte brauchen eine Auswahl. Modellspezifische Effekte bleiben beim passenden Gerät; es werden keine fremden Szenen-IDs übertragen.").font(.system(size:10)).foregroundStyle(Palette.muted)
+            Text(verbatim:tr("Alle Geräte brauchen eine Auswahl. Modellspezifische Effekte bleiben beim passenden Gerät; es werden keine fremden Szenen-IDs übertragen.")).font(.system(size:10)).foregroundStyle(Palette.muted)
         }
     }
 }

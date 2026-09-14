@@ -12,9 +12,9 @@ xcrun swiftc -O -D MEDIA_EXPORT -parse-as-library -I "$BIN_DIR/Modules" \
   scripts/ExportMedia.swift -o .local/export-media
 .local/export-media
 for name in prism-drift music-reactor; do
-  ffmpeg -hide_banner -loglevel error -y -framerate 12 -i ".local/media-frames/$name-%03d.png" \
-    -c:v libx264 -pix_fmt yuv420p -crf 22 -movflags +faststart -an "docs/media/$name.mp4"
+  ffmpeg -hide_banner -loglevel error -y -framerate 24 -i ".local/media-frames/$name-%03d.png" \
+    -c:v libx264 -pix_fmt yuv420p -crf 20 -movflags +faststart -an "docs/media/$name.mp4"
   ffmpeg -hide_banner -loglevel error -y -i "docs/media/$name.mp4" \
-    -filter_complex '[0:v]fps=12,scale=720:-1:flags=lanczos,split[a][b];[a]palettegen[p];[b][p]paletteuse' \
+    -filter_complex '[0:v]fps=12,scale=768:-1:flags=lanczos,split[a][b];[a]palettegen[p];[b][p]paletteuse' \
     -loop 0 "docs/media/$name.gif"
 done

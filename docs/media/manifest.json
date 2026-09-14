@@ -1,13 +1,13 @@
 {
   "source": "scripts/ExportMedia.swift",
-  "kind": "offline synthetic documentation media",
+  "kind": "scripted offline app walkthroughs with synthetic data",
   "sha256": {
-    "ambilight.png": "38d39e142f92bd6fcb8e39ffdd9a6478b567423227e6f4245dbb1e76332336fa",
-    "music-reactor.gif": "776aef76939ba327ee1982745a2a91d422ee9be9d18adf8c6153f6c40ced8f1d",
-    "music-reactor.mp4": "82569c8b8d1698e40b449f5c0899e69069510cdb15a68b9005b3eb699f69a000",
-    "music.png": "dee3dde9381612f13f5c87375852990b152b40e0dd11388febaf895542d111ce",
-    "prism-drift.gif": "3ae18336572c7347e43cfcb6518eadb27b1c2841c5e02cd756ea2da4c6741bfe",
-    "prism-drift.mp4": "3bd711911e10fb94d35e89f542720d2ac0533550a1ef078a12c8b655e60c0ad1",
-    "scenes.png": "b5269095cf22be2af20bbff833e9e3b0318515bf08b75356780d59c19b4c9aaa"
+    "ambilight.png": "73506fd7a84fbf9e38d6699e7cb47e02ebc882c25e2027a82d69cadb96e0ac80",
+    "music-reactor.gif": "57c7e41c9b48141eee9cb87c5e93b95d2d959f523b03ce9de693a0dd866d246b",
+    "music-reactor.mp4": "b49c0447759fbb8af290fb10120f69e3e054a5e9b90e010c5495720cec31d67d",
+    "music.png": "192ab427f1808b69b048f40c4d8368dbbb1b108ab5976947b8653b8460787783",
+    "prism-drift.gif": "fe3ed9c892dc5fab535460608ae70719ddf8403c6ef25b2e4815cebc28c3bc08",
+    "prism-drift.mp4": "51e07dac34eb8d7b6feef18e87b53a361f832074a705537b717912c663f99a46",
+    "scenes.png": "e9c08547dbb0bb9f5636665b95fa20f13d1633b8b0cbcd85112ccbd59f0a73fb"
   }
 }

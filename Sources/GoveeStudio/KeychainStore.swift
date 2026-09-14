@@ -41,17 +41,17 @@ struct CredentialSettingsView: View {
     var body: some View {
         VStack(alignment:.leading,spacing:9) {
             HStack {
-                Label(library.keySaved ? "Key im macOS-Schlüsselbund":"Govee-Verbindung",systemImage:library.keySaved ? "lock.shield.fill":"key.fill").font(.system(size:11,weight:.medium)).foregroundStyle(Palette.mint)
+                Label(tr(library.keySaved ? "Key im macOS-Schlüsselbund":"Govee-Verbindung"),systemImage:library.keySaved ? "lock.shield.fill":"key.fill").font(.system(size:11,weight:.medium)).foregroundStyle(Palette.mint)
                 Spacer()
-                if library.keySaved { Button(editing ? "Schließen":"Key ändern") { editing.toggle() }.buttonStyle(.plain).font(.system(size:10)) }
+                if library.keySaved { Button(tr(editing ? "Schließen":"Key ändern")) { editing.toggle() }.buttonStyle(.plain).font(.system(size:10)) }
             }
             if !library.keySaved || editing {
                 HStack {
-                    SecureField("Govee API-Key",text:$library.key).textFieldStyle(.roundedBorder).accessibilityLabel("Govee API-Key")
-                    Button("Dauerhaft speichern") { library.saveKey(); if library.keySaved { editing=false } }.buttonStyle(StudioButtonStyle()).disabled(library.key.isEmpty)
+                    SecureField(tr("Govee API-Key"),text:$library.key).textFieldStyle(.roundedBorder).accessibilityLabel(tr("Govee API-Key"))
+                    Button(tr("Dauerhaft speichern")) { library.saveKey(); if library.keySaved { editing=false } }.buttonStyle(StudioButtonStyle()).disabled(library.key.isEmpty)
                 }
             }
-            Text(library.keyStatus).font(.system(size:9)).foregroundStyle(Palette.muted)
+            Text(verbatim:tr(library.keyStatus)).font(.system(size:9)).foregroundStyle(Palette.muted)
         }.padding(12).background(Palette.raised,in:RoundedRectangle(cornerRadius:10))
     }
 }

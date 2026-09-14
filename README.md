@@ -10,17 +10,17 @@ Created by **Naiklas**. Born in a personal light lab, with a little Neon-Schlat 
 
 ![Govee Studio scene interface with synthetic demo devices](docs/media/scenes.png)
 
-*Actual SwiftUI interface rendered offline with synthetic devices. The app UI is currently German; this documentation is English. These are not photos of physical lights.*
+*Actual SwiftUI interface rendered offline with synthetic devices. Use the DE / EN switch in the app header to change the interface language instantly. Your choice is saved. These are not photos of physical lights.*
 
 ## See it move
 
-| Local scene: Prism Drift | Music reaction: Prism Drive |
+| Scene controls in action | Music controls in action |
 | --- | --- |
 | ![Prism Drift engine animation](docs/media/prism-drift.gif) | ![Prism Drive with synthetic audio levels](docs/media/music-reactor.gif) |
 
-Six-second, silent clips rendered using the project's own local effect engine. Channels and audio levels are synthetic; these are **engine demonstrations, not hardware recordings**. No commercial songs, third-party videos or Govee vendor animations are included.
+Twelve-second, silent walkthroughs of the actual app interface at 24 fps. Scene selection, music patterns, colors and intensity change on a scripted timeline. Channels and audio levels are synthetic; these are **scripted app demos, not hardware recordings or captured mouse interactions**. No commercial songs, third-party videos or Govee vendor animations are included.
 
-Download the MP4 versions: [Prism Drift](docs/media/prism-drift.mp4) · [Prism Drive](docs/media/music-reactor.mp4). See [media provenance](docs/media/README.md) for sources and reproduction.
+Download the MP4 versions: [Scene walkthrough](docs/media/prism-drift.mp4) · [Music walkthrough](docs/media/music-reactor.mp4). See [media provenance](docs/media/README.md) for sources and reproduction.
 
 ## Features
 

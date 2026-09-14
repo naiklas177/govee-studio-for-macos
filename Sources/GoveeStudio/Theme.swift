@@ -16,7 +16,7 @@ enum Palette {
 struct ThinDivider: View { var body: some View { Rectangle().fill(Palette.line).frame(height:1) } }
 struct Eyebrow: View {
     let text: String
-    var body: some View { Text(text.uppercased()).font(.system(size:10,weight:.semibold,design:.monospaced)).tracking(1.7).foregroundStyle(Palette.muted) }
+    var body: some View { Text(verbatim:tr(text).uppercased()).font(.system(size:10,weight:.semibold,design:.monospaced)).tracking(1.7).foregroundStyle(Palette.muted) }
 }
 struct StudioButtonStyle: ButtonStyle {
     var prominent=false

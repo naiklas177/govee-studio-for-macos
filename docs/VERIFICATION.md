@@ -40,3 +40,10 @@ The implementation targets macOS 14+. Actual device validation took place on App
 ## Documentation media
 
 `export-media.sh` compiles a separate offline renderer with `MEDIA_EXPORT`, using synthetic fixtures and levels. It renders real SwiftUI views and local-engine clips without normal startup, user data, Keychain or hardware output. The normal build remains unchanged. See `docs/media/README.md` for provenance and reproduction.
+
+## Language switching and app walkthroughs — v0.9.0
+
+- Added a persistent DE/EN header switch. UI copy is translated at display time; serialized scene/mode values and device names remain stable. The media exporter forces English without writing a language preference. Translation caching is bounded.
+- 68 tests passed: language persistence, German/English display selection, stored scene identity, dynamic status values, word boundaries and scene/music description coverage. Normal release build and installation passed.
+- Live app checks: English and German switched immediately; German survived a complete quit/relaunch. Switching to English during active Mac music kept the same settings and approximately 25 fps output. Setup labels were inspected and remaining status/help strings completed. User preference was returned to German.
+- Replaced isolated channel-strip animations with twelve-second scripted walkthroughs of the real SwiftUI app at 1440x980, 24 fps. Scene/music selections and intensity change while synthetic channel output and levels animate. This is offscreen rendering, not captured user interaction or physical light footage. MP4 decoding and lack of audio verified; representative frames visually inspected. README descriptions and reviewed media hashes updated.
