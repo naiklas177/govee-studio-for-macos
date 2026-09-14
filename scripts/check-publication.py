@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Inspect staged blobs without printing matched secret values. No network or Keychain access."""
+import hashlib
+import json
 import pathlib
 import re
 import subprocess
@@ -31,12 +33,22 @@ def main():
         'absolute personal home path': r'/Users/[A-Za-z0-9_.-]+/',
     }
     findings = []
+    try:
+        media = json.loads(git('show', ':docs/media/manifest.json'))['sha256']
+    except (subprocess.CalledProcessError, KeyError, ValueError):
+        media = {}
+
     for name in paths:
         path = pathlib.PurePosixPath(name)
         if blocked_dirs.intersection(path.parts) or path.name in blocked_names or path.name.startswith('.env') or path.suffix in {'.zip', '.key', '.pem', '.p12', '.log'}:
             findings.append(f'{name}: private/generated path')
             continue
         data = git('show', ':' + name)
+        if path.parent == pathlib.PurePosixPath('docs/media') and path.suffix in {'.png', '.gif', '.mp4'}:
+            if media.get(path.name) == hashlib.sha256(data).hexdigest():
+                continue
+            findings.append(f'{name}: media checksum absent or changed; review required')
+            continue
         if b'\0' in data:
             findings.append(f'{name}: binary requires explicit manual review')
             continue
@@ -48,7 +60,7 @@ def main():
         print('\n'.join(findings))
         print('Publication check failed. Values intentionally omitted.')
         return 1
-    print(f'Checked {len(paths)} staged text files: no flagged credentials, device identifiers or private paths.')
+    print(f'Checked {len(paths)} staged files (including checksum-reviewed media): no flagged credentials, device identifiers or private paths.')
     return 0
 
 

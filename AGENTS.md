@@ -12,3 +12,5 @@
 - Build artifacts, diagnostic captures and live IP inventories belong under ignored .build, dist, or .local. No secrets or screen frames in the repository.
 
 - Before publishing, inspect the exact staged files with `python3 scripts/check-publication.py`. Keep local session notes and inventories out of history. No project license has been chosen yet.
+
+- Documentation media is explicitly authorized: use only offline synthetic app renders and local-engine animations. Never publish live desktop captures. Review every output and update `docs/media/manifest.json` before staging media. Keep the `MEDIA_EXPORT` build isolated from user state, credentials and hardware.

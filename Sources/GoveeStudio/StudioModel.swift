@@ -102,6 +102,11 @@ final class StudioModel: ObservableObject {
     var aspect: Double { if let display=displays.first(where:{$0.id == displayID}) { return Double(display.width)/Double(display.height) }; return 16/9 }
 
     init() {
+        #if MEDIA_EXPORT
+        // Offline documentation renderer: no user files, Keychain, discovery or capture.
+        directory=FileManager.default.temporaryDirectory.appendingPathComponent("GoveeStudio-Media-"+UUID().uuidString)
+        return
+        #else
         directory=FileManager.default.urls(for:.applicationSupportDirectory,in:.userDomainMask)[0].appendingPathComponent("GoveeStudio",isDirectory:true)
         do { try FileManager.default.createDirectory(at:directory,withIntermediateDirectories:true) } catch { message=error.localizedDescription }
         load()
@@ -137,6 +142,7 @@ final class StudioModel: ObservableObject {
             if !self.displays.contains(where:{$0.id == self.displayID}) { self.displayID=CGMainDisplayID() }
         } }
         Task { await scan() }
+        #endif
     }
     func isOnline(_ device: DeviceConfig) -> Bool { Date().timeIntervalSince(lastSeen[device.id] ?? .distantPast) < 35 }
     private func ensureNetwork() throws { if !networkReady { try transport.open(); networkReady=true } }

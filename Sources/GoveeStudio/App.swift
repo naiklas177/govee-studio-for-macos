@@ -22,6 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
 }
 
+#if !MEDIA_EXPORT
 @main
 struct GoveeStudioApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
@@ -45,3 +46,5 @@ struct GoveeStudioApp: App {
         }
     }
 }
+
+#endif

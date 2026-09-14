@@ -36,3 +36,7 @@ The development scripts are optional:
 - `Benchmark.swift`: synthetic sampling benchmark, not end-to-end light latency.
 
 The implementation targets macOS 14+. Actual device validation took place on Apple Silicon/macOS 26; Intel and older macOS versions have not been verified. No universal compatibility or frame-rate guarantee is implied.
+
+## Documentation media
+
+`export-media.sh` compiles a separate offline renderer with `MEDIA_EXPORT`, using synthetic fixtures and levels. It renders real SwiftUI views and local-engine clips without normal startup, user data, Keychain or hardware output. The normal build remains unchanged. See `docs/media/README.md` for provenance and reproduction.
