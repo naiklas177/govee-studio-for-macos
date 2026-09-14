@@ -1,4 +1,4 @@
-# Govee Studio
+# Govee-Studio for macOS
 
 **Your screen. Your sound. Your lights.**
 
@@ -6,7 +6,33 @@ A native macOS light studio for desktop Ambilight, local scenes and music-reacti
 
 Created by **Naiklas**. Born in a personal light lab, with a little Neon-Schlat left in its DNA.
 
-> Independent community project. Not developed, endorsed or certified by Govee. Currently a private project with no open-source license granted.
+> Independent community project. Not developed, endorsed or certified by Govee. Source available for inspection; no open-source license has been granted.
+
+
+## Quick setup
+
+You need **macOS 14+**, **full Xcode with Swift 6+**, and compatible Govee lights with **LAN Control** enabled in Govee Home. Keep your Mac and lights on a network where they can reach each other.
+
+**1. Build and open the app**
+
+```sh
+git clone https://github.com/naiklas177/govee-studio-for-macos.git
+cd govee-studio-for-macos
+./scripts/build-app.sh --install
+open "$HOME/Applications/Govee Studio.app"
+```
+
+**2. Find your lights** — Open **Setup → Find devices**. Allow local network access if macOS asks. Use **DE / EN** in the header to choose your language.
+
+**3. Give it your screen** — Allow screen/system-audio recording for Ambilight or Mac music. Restart the app if prompted, select your display, then place the sampling zones where you want them. Check segment count and order with the short segment test.
+
+**4. Turn it on** — Pick **Ambilight**, **Scenes** or **Music**, then start output. **Stop** or `⌘.` restores the saved basic light settings. Your setup saves automatically.
+
+**No API key needed for local modes.** For Govee original effects or device music, enter your own key in the Govee section, choose **Save permanently**, and refresh the catalog or fetch music modes. The key stays in macOS Keychain.
+
+*Builds are locally ad-hoc signed, not notarized. Hardware testing has covered Apple Silicon/macOS 26; see [compatibility and limitations](#compatibility-and-limitations) for model coverage.*
+
+## Preview
 
 ![Govee Studio scene interface with synthetic demo devices](docs/media/scenes.png)
 
@@ -69,24 +95,13 @@ The script prefers `/Applications/Xcode.app` without changing global `xcode-sele
 
 Builds are locally ad-hoc signed, not notarized or distributed through the App Store. The script builds for the host Mac's architecture, not a universal binary. Private configuration files are never copied into the bundle.
 
-## First-time setup
+## Original effects and device music
 
-1. Enable **LAN Control** for each light in Govee Home. The Mac and lights must be able to reach each other.
-2. Open **Setup → Geräte suchen** (Find devices). Allow local network access if macOS asks.
-3. For Ambilight or Mac system audio, grant the macOS screen/system-audio recording permission. Restart the app if prompted.
-4. Select your display and lights. Place sampling zones over the desired screen regions. Control-click enables multi-selection.
-5. Verify segment count and order using the short segment test. Defaults are starting points, not automatic hardware calibration.
-6. Choose **Ambilight**, **Szenen** (Scenes) or **Musik** (Music) and start output. **Stoppen** (Stop), or `⌘.`, stops output and sends the saved basic light state back.
+Enter your own API key in a Govee section. **Save permanently** stores it in macOS Keychain and loads it on later launches. Then use **Refresh catalog** or **Fetch music modes**.
 
-Settings save automatically. Named profiles preserve mappings and light parameters. **Vorschau** (Preview) runs without light output. The app excludes its own windows from screen capture.
+Under **Scenes → Govee · Original & DIY → Whole room · Original**, select an original effect for every enabled light, then start the room. Every command uses the selected device's own scene ID. Single-device and DIY controls remain available separately.
 
-### Original effects and device music
-
-Enter your own API key in a Govee section. **Dauerhaft speichern** (Save permanently) stores it in macOS Keychain and loads it on later launches. Then use **Katalog aktualisieren** (Refresh catalog) or **Musikmodi abrufen** (Fetch music modes).
-
-Under **Szenen → Govee · Original & DIY → Ganzer Raum · Original**, select an original effect for every enabled light, then start the room. Every command uses the selected device's own scene ID. Single-device and DIY controls remain available separately.
-
-**Mac · Systemaudio** and **Govee · Geräte-Musik** are different engines. Govee's native music modes react at the device; they do not receive a Mac audio stream. Their ongoing reaction does not require a continuous cloud stream. Starting a mode and changing sensitivity or colors uses cloud commands; brightness-only adjustments use LAN.
+**Mac · System audio** and **Govee · Device music** are different engines. Govee's native music modes react at the device; they do not receive a Mac audio stream. Their ongoing reaction does not require a continuous cloud stream. Starting a mode and changing sensitivity or colors uses cloud commands; brightness-only adjustments use LAN.
 
 ## Compatibility and limitations
 
@@ -131,4 +146,4 @@ More detail: [Architecture and verification](docs/VERIFICATION.md) · [Contribut
 - [LedFx Govee implementation](https://github.com/LedFx/LedFx/blob/main/ledfx/devices/govee.py)
 - [GoveeDreamView](https://github.com/LeoSko/GoveeDreamView)
 
-No project license has been chosen. Public release and licensing remain separate decisions.
+No project license has been chosen. Public visibility does not grant an open-source license.

@@ -1,6 +1,6 @@
 # Development
 
-This repository is currently private and has no open-source license. Please coordinate changes with the owner.
+This repository is public for inspection and has no open-source license. Please coordinate changes with the owner.
 
 1. Install full Xcode with Swift 6+.
 2. Run `./scripts/test.sh`.

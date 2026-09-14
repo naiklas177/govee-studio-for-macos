@@ -11,7 +11,7 @@ These assets were generated specifically for Govee Studio's repository presentat
 
 No commercial recordings, movie clips, YouTube content, stock footage, downloaded graphics or Govee-provided animation recordings are included. The app interface uses its existing macOS system controls, fonts and symbols. Govee is named to identify device compatibility; no affiliation is claimed.
 
-This provenance record does not grant a license to the project or to third-party names/system assets. Repository visibility remains private and project licensing is still undecided.
+This provenance record does not grant a license to the project or to third-party names/system assets. The repository is public for inspection; project licensing is still undecided.
 
 ## Reproduce
 
