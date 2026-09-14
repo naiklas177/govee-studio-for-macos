@@ -1,0 +1,24 @@
+# Build output and local diagnostics
+.build/
+.swiftpm/
+dist/
+.local/
+.DS_Store
+*.app/
+*.zip
+*.log
+
+# Credentials and machine-specific lighting state
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.key
+workspace.json
+show.json
+recovery.json
+room-music.json
+room-scenes.json
+govee-scenes.json
+govee-music-profiles.json
