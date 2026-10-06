@@ -3,7 +3,9 @@ import AmbienceCore
 
 struct ShowView: View {
     @EnvironmentObject var model: StudioModel
-    @ObservedObject var live: LiveTelemetry
+    // Only the small live displays subscribe to frame reports. Observing here
+    // invalidates the entire controls/ScrollView layout on every telemetry tick.
+    let live: LiveTelemetry
     var body: some View {
         HStack(alignment:.top,spacing:0) {
             ScrollView {
@@ -112,7 +114,7 @@ struct ShowView: View {
                     }
                     if model.show.mode == .music && model.show.musicBackground.enabled {
                         Eyebrow(text:"Ambilight / Hintergrund")
-                        Text(verbatim:tr(live.report.backgroundFrames > 0 ? "Bildschirmfarben empfangen":"Warte auf Bildschirmfarben")).font(.system(size:9)).foregroundStyle(Palette.muted)
+                        BackgroundCaptureStatus(live:live)
                         slider("Ambilight-Helligkeit",value:ambientSetting(\.gain),range:0...1,display:"\(Int(model.show.musicBackground.gain*100)) %")
                         slider("Ambilight-Sättigung",value:ambientSetting(\.saturation),range:0...2,display:"\(Int(model.show.musicBackground.saturation*100)) %")
                         slider("Ambilight-Glättung",value:ambientSetting(\.smoothing),range:0...1.5,display:"\(Int(model.show.musicBackground.smoothing*1000)) ms")
@@ -160,7 +162,7 @@ struct ShowView: View {
 
 struct MusicDeck: View {
     @EnvironmentObject var model: StudioModel
-    @ObservedObject var live: LiveTelemetry
+    let live: LiveTelemetry
     var body: some View {
         VStack(alignment:.leading,spacing:18) {
             HStack { Eyebrow(text:"Audio / Reaktion"); Spacer(); Text(verbatim:tr("LIVE EINSTELLBAR")).font(.system(size:9,design:.monospaced)).foregroundStyle(Palette.mint) }
@@ -204,6 +206,14 @@ struct MusicDeck: View {
                 }.frame(width:190)
             }
         }.padding(20).background(Palette.panel,in:RoundedRectangle(cornerRadius:14))
+    }
+}
+
+struct BackgroundCaptureStatus: View {
+    @ObservedObject var live: LiveTelemetry
+    var body: some View {
+        Text(verbatim:tr(live.report.backgroundFrames > 0 ? "Bildschirmfarben empfangen":"Warte auf Bildschirmfarben"))
+            .font(.system(size:9)).foregroundStyle(Palette.muted)
     }
 }
 
@@ -251,8 +261,12 @@ struct LightStage: View {
                     for (index,device) in devices.enumerated() {
                         let count=model.show.mode == .ambience ? device.zones.count:model.show.count(for:device)
                         let time=reduceMotion ? 0:context.date.timeIntervalSinceReferenceDate
-                        let fallback=model.show.mode == .ambience ? Array(repeating:RGB(35,60,75),count:count):ShowRenderer.colors(count:count,time:time,offset:Double(index)*0.17,settings:model.show)
-                        let colors=model.running ? (live.colors[device.id] ?? fallback):fallback
+                        let colors: [RGB]
+                        if model.running, let reported=live.colors[device.id] {
+                            colors=reported
+                        } else {
+                            colors=model.show.mode == .ambience ? Array(repeating:RGB(35,60,75),count:count):ShowRenderer.colors(count:count,time:time,offset:Double(index)*0.17,settings:model.show)
+                        }
                         let label=Text(device.name).font(.system(size:10,weight:.medium)).foregroundColor(Palette.muted)
                         canvas.draw(label,at:CGPoint(x:0,y:Double(index)*rowHeight+rowHeight/2),anchor:.leading)
                         let start=125.0, usable=max(1,size.width-start), width=usable/Double(max(1,colors.count))
