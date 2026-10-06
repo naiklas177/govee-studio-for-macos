@@ -9,6 +9,8 @@ Created by **Naiklas**. Born in a personal light lab, with a little Neon-Schlat 
 > Independent community project. Not developed, endorsed or certified by Govee. Source available for inspection; no open-source license has been granted.
 
 
+**Performance update:** about **59% less CPU time in the repeated synthetic music + Ambilight UI benchmark**, with capture and light-output settings unchanged. [Read the changelog and measurement scope](CHANGELOG.md).
+
 ## Quick setup
 
 You need **macOS 14+**, **full Xcode with Swift 6+**, and compatible Govee lights with **LAN Control** enabled in Govee Home. Keep your Mac and lights on a network where they can reach each other.
